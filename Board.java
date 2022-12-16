@@ -21,14 +21,14 @@ public class Board {
     }
 
     public Piece piece(int row, int column){
-        if(PositionExists(row, column)){
+        if(!PositionExists(row, column)){
             throw new BoardException("Erro: Está posição não Existe no tabuleiro.");
         }
         return pieces[row][column];
     }
 
     public Piece piece(Position position){
-        if(PositionExists(position)){
+        if(!PositionExists(position)){
             throw new BoardException("Erro: Está posição não Existe no tabuleiro.");
         }
         return pieces[position.getRow()][position.getColumn()];
@@ -42,18 +42,34 @@ public class Board {
         piece.position = position;
     }
 
-    private boolean PositionExists(int row, int column){
-        return row >= 0 && row < rows && column >= 0 && column < columns;
-    }
-
     public boolean PositionExists(Position position){
         return PositionExists(position.getRow(), position.getColumn());
     }
 
+    private boolean PositionExists(int row, int column){
+        return row >= 0 && row < rows && column >= 0 && column < columns;
+    }
+
     public boolean thereIsAPiece(Position position){
-        if(PositionExists(position)){
+        if(!PositionExists(position)){
             throw new BoardException("Erro: Está posição não Existe no tabuleiro.");
         }
         return piece(position) != null;
+    }
+
+    public Piece removePiece(Position position){
+        if(!PositionExists(position)){
+            throw new BoardException("Erro: Está posição não Existe no tabuleiro.");
+        }
+
+        if(piece(position) == null){
+            return null;
+        }
+
+        Piece aux = piece(position);
+        aux.position = null;
+        pieces[position.getRow()][position.getColumn()] = null;
+
+        return aux;
     }
 }
